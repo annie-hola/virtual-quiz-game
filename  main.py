@@ -29,3 +29,19 @@ class MCQ():
             if x1 < cursor[0] < x2 and y1 < cursor[1] < y2:
                 self.userAns = x + 1
                 cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), cv2.FILLED)
+
+# Import csv file data
+pathCSV = "Mcqs.csv"
+with open(pathCSV, newline='\n') as f:
+    reader = csv.reader(f)
+    dataAll = list(reader)[1:]
+
+# Create Object for each MCQ
+mcqList = []
+for q in dataAll:
+    mcqList.append(MCQ(q))
+
+print("Total MCQ Objects Created:", len(mcqList))
+
+qNo = 0
+qTotal = len(dataAll)
