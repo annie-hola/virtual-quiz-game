@@ -70,3 +70,20 @@ while True:
                 if mcq.userAns is not None:
                     time.sleep(0.3)
                     qNo += 1
+    else:
+        score = 0
+        for mcq in mcqList:
+            if mcq.answer == mcq.userAns:
+                score += 1
+        score = round((score / qTotal) * 100, 2)
+        img, _ = cvzone.putTextRect(img, "Quiz Completed", [250, 300], 2, 2, offset=50, border=5)
+        img, _ = cvzone.putTextRect(img, f'Your Score: {score}%', [700, 300], 2, 2, offset=50, border=5)
+
+    # Draw Progress Bar
+    barValue = 150 + (950 // qTotal) * qNo
+    cv2.rectangle(img, (150, 600), (barValue, 650), (0, 255, 0), cv2.FILLED)
+    cv2.rectangle(img, (150, 600), (1100, 650), (255, 0, 255), 5)
+    img, _ = cvzone.putTextRect(img, f'{round((qNo / qTotal) * 100)}%', [1130, 635], 2, 2, offset=16)
+
+    cv2.imshow("Img", img)
+    cv2.waitKey(1)
