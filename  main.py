@@ -45,3 +45,28 @@ print("Total MCQ Objects Created:", len(mcqList))
 
 qNo = 0
 qTotal = len(dataAll)
+
+while True:
+    success, img = cap.read()
+    img = cv2.flip(img, 1)
+    hands, img = detector.findHands(img, flipType=False)
+
+    if qNo < qTotal:
+        mcq = mcqList[qNo]
+
+        img, bbox = cvzone.putTextRect(img, mcq.question, [100, 100], 2, 2, offset=50, border=5)
+        img, bbox1 = cvzone.putTextRect(img, mcq.choice1, [100, 250], 2, 2, offset=50, border=5)
+        img, bbox2 = cvzone.putTextRect(img, mcq.choice2, [400, 250], 2, 2, offset=50, border=5)
+        img, bbox3 = cvzone.putTextRect(img, mcq.choice3, [100, 400], 2, 2, offset=50, border=5)
+        img, bbox4 = cvzone.putTextRect(img, mcq.choice4, [400, 400], 2, 2, offset=50, border=5)
+
+        if hands:
+            lmList = hands[0]['lmList']
+            cursor = lmList[8]
+            length, info = detector.findDistance(lmList[8], lmList[12])
+            print(length)
+            if length < 35:
+                mcq.update(cursor, [bbox1, bbox2, bbox3, bbox4])
+                if mcq.userAns is not None:
+                    time.sleep(0.3)
+                    qNo += 1
